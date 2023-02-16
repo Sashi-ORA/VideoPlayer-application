@@ -6,7 +6,7 @@ import SingleTapComponent from "./SingleTapComponent";
 const VideoPlayerComponent = () => {
   const [showControls, setShowControls] = useState(true);
   useEffect(() => {
-    setTimeout(() => setShowControls(false), 3000);
+    setTimeout(() => setShowControls(false), 5000);
   }, []);
   useMemo(() => {
     setTimeout(() => setShowControls(false), 5000);
@@ -23,50 +23,44 @@ const VideoPlayerComponent = () => {
   };
   return (
     <View style={styles.container}>
-      {/* <ImageBackground
+      <ImageBackground
         source={{
-          uri: "https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          uri: "https://tinypng.com/images/social/website.jpg",
         }}
         resizeMode="cover"
         style={styles.image}
-      >
-        <Text style={styles.text}>Inside</Text>
-      </ImageBackground> */}
-      <SingleTapComponent
+      />
+      <DoubleTapComponent
         style={styles.tapContainer}
         setShowControls={setShowControls}
         showControls={showControls}
       >
         {showControls && (
-          <View style={styles.tapContainer}>
+          <View style={styles.controlsContainer}>
             <DoubleTapComponent
               style={styles.leftTap}
               setShowControls={setShowControls}
               showControls={showControls}
             >
-              <Text style={{ color: "white" }}>Left</Text>
+              <Text>Left</Text>
             </DoubleTapComponent>
             <SingleTapComponent
               style={styles.playPause}
               setShowControls={setShowControls}
               showControls={showControls}
             >
-              <Text style={{ color: "white" }}>Play Pause</Text>
+              <Text>Play Pause</Text>
             </SingleTapComponent>
             <DoubleTapComponent
               style={styles.rightTap}
               setShowControls={setShowControls}
               showControls={showControls}
             >
-              <Text style={{ color: "white" }}>Right</Text>
+              <Text>Right</Text>
             </DoubleTapComponent>
           </View>
         )}
-      </SingleTapComponent>
-
-      {/* <View style={styles.videoContainer}>
-        <Text>Video</Text>
-      </View> */}
+      </DoubleTapComponent>
     </View>
   );
 };
@@ -87,9 +81,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     position: "absolute",
-    justifyContent: "center",
-    alignItems: "center",
+  },
+  controlsContainer: {
+    flexDirection: "row",
     backgroundColor: "red",
+    flex: 1,
   },
   playPause: {
     flex: 2,

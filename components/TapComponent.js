@@ -12,6 +12,7 @@ const DoubleTapComponent = ({
     .maxDuration(250)
     .numberOfTaps(1)
     .onStart(() => {
+      console.log("single tap");
       setShowControls(!showControls);
     });
 

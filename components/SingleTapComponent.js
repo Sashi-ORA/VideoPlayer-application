@@ -13,6 +13,7 @@ const SingleTapComponent = ({
     .numberOfTaps(1)
     .onStart(() => {
       setShowControls(!showControls);
+      console.log("singleTap");
     });
 
   return (
