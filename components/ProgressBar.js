@@ -17,12 +17,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    height: 10,
+    height: 5,
     borderRadius: 10,
     overflow: "hidden",
     marginHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "black",
+    backgroundColor: "#706d6d",
   },
   front: {
     width: "50%",
