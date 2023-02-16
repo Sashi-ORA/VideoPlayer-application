@@ -11,20 +11,14 @@ const VideoPlayerComponent = () => {
     setTimeout(() => setShowControls(false), 5000);
   }, []);
   useMemo(() => {
+    console.log("show cntrols", showControls);
     a = setTimeout(() => setShowControls(false), 5000);
   }, [showControls]);
 
-  const handleControlToggle = () => setShowControls(!showControls);
+  // const handleControlToggle = () => setShowControls(!showControls);
 
   return (
     <View style={styles.container}>
-      {/* <ImageBackground
-        source={{
-          uri: "https://tinypng.com/images/social/website.jpg",
-        }}
-        resizeMode="cover"
-        style={styles.image}
-      /> */}
       <Video
         // onLoad={handlePress}
         // onPlaybackStatusUpdate={handlePlayback}
