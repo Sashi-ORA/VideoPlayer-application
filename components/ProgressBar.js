@@ -2,7 +2,6 @@ import { View, Text, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
 
 const ProgressBar = ({ style }) => {
-  console.log("style---------------", style);
   return (
     <View style={styles.container}>
       {/* <Text>ProgressBar</Text> */}

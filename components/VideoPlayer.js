@@ -3,6 +3,9 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import DoubleTapComponent from "./TapComponent";
 import SingleTapComponent from "./SingleTapComponent";
 import { Video } from "expo-av";
+import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+
 import ProgressBar from "./ProgressBar";
 const VideoPlayerComponent = () => {
   const [showControls, setShowControls] = useState(true);
@@ -38,7 +41,6 @@ const VideoPlayerComponent = () => {
         // onLoad={handlePress}
         onPlaybackStatusUpdate={handlePlayback}
         // positionMillis={10000}
-        // ref={videoRef}
         // onFullscreenUpdate={handleFullScreenUpdate}
         //   rate={1}
         style={styles.video}
@@ -60,7 +62,7 @@ const VideoPlayerComponent = () => {
                 setShowControls={setShowControls}
                 showControls={showControls}
               >
-                <Text style={{ color: "white" }}>Left</Text>
+                <AntDesign name="stepbackward" size={30} color="white" />
               </DoubleTapComponent>
               <SingleTapComponent
                 style={styles.playPause}
@@ -69,14 +71,18 @@ const VideoPlayerComponent = () => {
                 setPlayPause={setPlayPause}
                 playPause={playPause}
               >
-                <Text style={{ color: "white" }}>Play Pause</Text>
+                {playPause ? (
+                  <Ionicons name="pause" size={40} color="white" />
+                ) : (
+                  <AntDesign name="caretright" size={30} color="white" />
+                )}
               </SingleTapComponent>
               <DoubleTapComponent
                 style={styles.rightTap}
                 setShowControls={setShowControls}
                 showControls={showControls}
               >
-                <Text style={{ color: "white" }}>Right</Text>
+                <AntDesign name="stepforward" size={30} color="white" />
               </DoubleTapComponent>
             </View>
             <ProgressBar
