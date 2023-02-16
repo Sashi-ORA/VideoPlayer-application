@@ -10,12 +10,11 @@ const VideoPlayerComponent = () => {
   useEffect(() => {
     setTimeout(() => setShowControls(false), 5000);
   }, []);
-  // useMemo(() => {
-  //   a = setTimeout(() => setShowControls(false), 5000);
-  // }, [showControls]);
+  useMemo(() => {
+    a = setTimeout(() => setShowControls(false), 5000);
+  }, [showControls]);
 
   const handleControlToggle = () => setShowControls(!showControls);
-  // useEffect(() => setShowControls(true), [showControls]);
 
   return (
     <View style={styles.container}>
