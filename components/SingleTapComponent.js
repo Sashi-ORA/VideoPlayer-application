@@ -7,13 +7,16 @@ const SingleTapComponent = ({
   style,
   setShowControls,
   showControls,
+  setPlayPause,
+  playPause,
 }) => {
   const singleTap = Gesture.Tap()
     .maxDuration(250)
     .numberOfTaps(1)
     .onStart(() => {
-      setShowControls(!showControls);
+      setShowControls(true);
       console.log("singleTap");
+      setPlayPause(!playPause);
     });
 
   return (

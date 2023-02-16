@@ -12,8 +12,8 @@ const DoubleTapComponent = ({
     .maxDuration(250)
     .numberOfTaps(1)
     .onStart(() => {
+      setShowControls(true);
       console.log("single tap");
-      setShowControls(!showControls);
     });
 
   const doubleTap = Gesture.Tap()

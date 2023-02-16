@@ -2,33 +2,42 @@ import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import DoubleTapComponent from "./TapComponent";
 import SingleTapComponent from "./SingleTapComponent";
-
+import { Video } from "expo-av";
 const VideoPlayerComponent = () => {
   const [showControls, setShowControls] = useState(true);
+  const [playPause, setPlayPause] = useState(true);
+  let a;
   useEffect(() => {
     setTimeout(() => setShowControls(false), 5000);
   }, []);
-  useMemo(() => {
-    setTimeout(() => setShowControls(false), 5000);
-  }, [showControls]);
+  // useMemo(() => {
+  //   a = setTimeout(() => setShowControls(false), 5000);
+  // }, [showControls]);
 
-  const handleLeftTap = () => {
-    console.log("left tap");
-  };
-  const handleRightTap = () => {
-    console.log("right tap");
-  };
-  const handlePlayPause = () => {
-    console.log("Play pause tap");
-  };
+  const handleControlToggle = () => setShowControls(!showControls);
+  // useEffect(() => setShowControls(true), [showControls]);
+
   return (
     <View style={styles.container}>
-      <ImageBackground
+      {/* <ImageBackground
         source={{
           uri: "https://tinypng.com/images/social/website.jpg",
         }}
         resizeMode="cover"
         style={styles.image}
+      /> */}
+      <Video
+        // onLoad={handlePress}
+        // onPlaybackStatusUpdate={handlePlayback}
+        // //   positionMillis={10000}
+        // ref={videoRef}
+        // onFullscreenUpdate={handleFullScreenUpdate}
+        //   rate={1}
+        style={styles.video}
+        source={require("../test.mp4")}
+        // useNativeControls
+        resizeMode="contain"
+        shouldPlay={playPause}
       />
       <DoubleTapComponent
         style={styles.tapContainer}
@@ -42,21 +51,23 @@ const VideoPlayerComponent = () => {
               setShowControls={setShowControls}
               showControls={showControls}
             >
-              <Text>Left</Text>
+              <Text style={{ color: "white" }}>Left</Text>
             </DoubleTapComponent>
             <SingleTapComponent
               style={styles.playPause}
               setShowControls={setShowControls}
               showControls={showControls}
+              setPlayPause={setPlayPause}
+              playPause={playPause}
             >
-              <Text>Play Pause</Text>
+              <Text style={{ color: "white" }}>Play Pause</Text>
             </SingleTapComponent>
             <DoubleTapComponent
               style={styles.rightTap}
               setShowControls={setShowControls}
               showControls={showControls}
             >
-              <Text>Right</Text>
+              <Text style={{ color: "white" }}>Right</Text>
             </DoubleTapComponent>
           </View>
         )}
@@ -84,7 +95,6 @@ const styles = StyleSheet.create({
   },
   controlsContainer: {
     flexDirection: "row",
-    backgroundColor: "red",
     flex: 1,
   },
   playPause: {
@@ -104,6 +114,10 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
+  },
+  video: {
+    width: "100%",
+    aspectRatio: 16 / 9,
   },
 });
 export default VideoPlayerComponent;
