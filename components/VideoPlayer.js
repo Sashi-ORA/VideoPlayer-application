@@ -3,26 +3,41 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import DoubleTapComponent from "./TapComponent";
 import SingleTapComponent from "./SingleTapComponent";
 import { Video } from "expo-av";
+import ProgressBar from "./ProgressBar";
 const VideoPlayerComponent = () => {
   const [showControls, setShowControls] = useState(true);
   const [playPause, setPlayPause] = useState(true);
-  let a;
+  const [playBackStatus, setPlayBackStatus] = useState({
+    totalMilli: 0,
+    completedMillis: 0,
+    pendingPercentage: 0,
+  }); //for progress bar
   useEffect(() => {
     setTimeout(() => setShowControls(false), 5000);
   }, []);
   useMemo(() => {
     console.log("show cntrols", showControls);
-    a = setTimeout(() => setShowControls(false), 5000);
+    setTimeout(() => setShowControls(false), 5000);
   }, [showControls]);
 
-  // const handleControlToggle = () => setShowControls(!showControls);
-
+  const handlePlayback = (data) => {
+    setPlayBackStatus({
+      totalMilli: data.durationMillis,
+      completedMillis: data.positionMillis,
+      pendingPercentage:
+        100 -
+        Math.floor(
+          ((data.durationMillis - data.positionMillis) / data.durationMillis) *
+            100
+        ),
+    });
+  };
   return (
     <View style={styles.container}>
       <Video
         // onLoad={handlePress}
-        // onPlaybackStatusUpdate={handlePlayback}
-        // //   positionMillis={10000}
+        onPlaybackStatusUpdate={handlePlayback}
+        // positionMillis={10000}
         // ref={videoRef}
         // onFullscreenUpdate={handleFullScreenUpdate}
         //   rate={1}
@@ -38,30 +53,37 @@ const VideoPlayerComponent = () => {
         showControls={showControls}
       >
         {showControls && (
-          <View style={styles.controlsContainer}>
-            <DoubleTapComponent
-              style={styles.leftTap}
-              setShowControls={setShowControls}
-              showControls={showControls}
-            >
-              <Text style={{ color: "white" }}>Left</Text>
-            </DoubleTapComponent>
-            <SingleTapComponent
-              style={styles.playPause}
-              setShowControls={setShowControls}
-              showControls={showControls}
-              setPlayPause={setPlayPause}
-              playPause={playPause}
-            >
-              <Text style={{ color: "white" }}>Play Pause</Text>
-            </SingleTapComponent>
-            <DoubleTapComponent
-              style={styles.rightTap}
-              setShowControls={setShowControls}
-              showControls={showControls}
-            >
-              <Text style={{ color: "white" }}>Right</Text>
-            </DoubleTapComponent>
+          <View style={{ flex: 1, marginBottom: 10 }}>
+            <View style={styles.controlsContainer}>
+              <DoubleTapComponent
+                style={styles.leftTap}
+                setShowControls={setShowControls}
+                showControls={showControls}
+              >
+                <Text style={{ color: "white" }}>Left</Text>
+              </DoubleTapComponent>
+              <SingleTapComponent
+                style={styles.playPause}
+                setShowControls={setShowControls}
+                showControls={showControls}
+                setPlayPause={setPlayPause}
+                playPause={playPause}
+              >
+                <Text style={{ color: "white" }}>Play Pause</Text>
+              </SingleTapComponent>
+              <DoubleTapComponent
+                style={styles.rightTap}
+                setShowControls={setShowControls}
+                showControls={showControls}
+              >
+                <Text style={{ color: "white" }}>Right</Text>
+              </DoubleTapComponent>
+            </View>
+            <ProgressBar
+              style={{
+                width: `${playBackStatus.pendingPercentage}%`,
+              }}
+            />
           </View>
         )}
       </DoubleTapComponent>
