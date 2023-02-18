@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import DoubleTapComponent from "./TapComponent";
 import SingleTapComponent from "./SingleTapComponent";
@@ -15,6 +15,8 @@ const VideoPlayerComponent = () => {
     completedMillis: 0,
     pendingPercentage: 0,
   }); //for progress bar
+  const [skipTo, setSkipTo] = useState(0);
+
   useEffect(() => {
     setTimeout(() => setShowControls(false), 5000);
   }, []);
@@ -35,64 +37,118 @@ const VideoPlayerComponent = () => {
         ),
     });
   };
+
+  const handleLeft = () => {
+    console.log("left/prev video");
+  };
+  const handlePlayPause = () => {
+    setPlayPause(!playPause);
+  };
+  const handleRight = () => {
+    console.log("Right/next video");
+  };
   return (
     <View style={styles.container}>
-      <Video
-        // onLoad={handlePress}
-        onPlaybackStatusUpdate={handlePlayback}
-        // positionMillis={10000}
-        // onFullscreenUpdate={handleFullScreenUpdate}
-        //   rate={1}
-        style={styles.video}
-        source={require("../test.mp4")}
-        // useNativeControls
-        resizeMode="contain"
-        shouldPlay={playPause}
-      />
-      <DoubleTapComponent
+      <SingleTapComponent
         style={styles.tapContainer}
         setShowControls={setShowControls}
-        showControls={showControls}
       >
-        {showControls && (
-          <View style={{ flex: 1, marginBottom: 10 }}>
-            <View style={styles.controlsContainer}>
+        <Video
+          // onLoad={handlePress}
+          onPlaybackStatusUpdate={handlePlayback}
+          positionMillis={skipTo}
+          // onFullscreenUpdate={handleFullScreenUpdate}
+          //   rate={1}
+          style={styles.video}
+          source={require("../test.mp4")}
+          // useNativeControls
+          resizeMode="contain"
+          shouldPlay={playPause}
+          // shouldPlay={false}
+        />
+      </SingleTapComponent>
+      {showControls && (
+        <View
+          style={{
+            flex: 1,
+            position: "absolute",
+            height: "100%",
+            width: "100%",
+          }}
+        >
+          <View
+            style={{
+              flex: 4,
+              justifyContent: "center",
+              alignItems: "center",
+              // backgroundColor: "red",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: 25,
+                width: "100%",
+                height: "100%",
+              }}
+            >
               <DoubleTapComponent
                 style={styles.leftTap}
                 setShowControls={setShowControls}
                 showControls={showControls}
+                name="left"
+                setSkipTo={setSkipTo}
+                playBackStatus={playBackStatus}
               >
-                <AntDesign name="stepbackward" size={30} color="white" />
+                <Pressable onPress={handleLeft}>
+                  <AntDesign name="stepbackward" size={30} color="white" />
+                </Pressable>
               </DoubleTapComponent>
-              <SingleTapComponent
-                style={styles.playPause}
-                setShowControls={setShowControls}
-                showControls={showControls}
-                setPlayPause={setPlayPause}
-                playPause={playPause}
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                {playPause ? (
-                  <Ionicons name="pause" size={40} color="white" />
-                ) : (
-                  <AntDesign name="caretright" size={30} color="white" />
-                )}
-              </SingleTapComponent>
+                <Pressable onPress={handlePlayPause}>
+                  {playPause ? (
+                    <Ionicons name="pause" size={28} color="white" />
+                  ) : (
+                    <AntDesign name="caretright" size={30} color="white" />
+                  )}
+                </Pressable>
+              </View>
+
               <DoubleTapComponent
                 style={styles.rightTap}
                 setShowControls={setShowControls}
                 showControls={showControls}
+                name="right"
+                setSkipTo={setSkipTo}
+                playBackStatus={playBackStatus}
               >
-                <AntDesign name="stepforward" size={30} color="white" />
+                <Pressable onPress={handleRight}>
+                  <AntDesign name="stepforward" size={30} color="white" />
+                </Pressable>
               </DoubleTapComponent>
             </View>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+            }}
+          >
             <ProgressBar
               style={{
                 width: `${playBackStatus.pendingPercentage}%`,
               }}
             />
           </View>
-        )}
-      </DoubleTapComponent>
+        </View>
+      )}
     </View>
   );
 };
