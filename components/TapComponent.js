@@ -32,16 +32,17 @@ const DoubleTapComponent = ({
         : handleLeftSkip(playBackStatus);
     });
 
-  const singleTap = Gesture.Tap()
-    .maxDuration(250)
-    .numberOfTaps(1)
-    .onStart(() => {
-      console.log(`Single tap ${name}`);
-      setShowControls(true);
-    });
+  // const singleTap = Gesture.Tap()
+  //   .maxDuration(250)
+  //   .numberOfTaps(1)
+  //   .onStart(() => {
+  //     console.log(`Single tap ${name}`);
+  //     setShowControls(true);
+  //   });
 
   return (
-    <GestureDetector gesture={Gesture.Exclusive(doubleTap, singleTap)}>
+    // <GestureDetector gesture={Gesture.Exclusive(doubleTap, singleTap)}>
+    <GestureDetector gesture={doubleTap}>
       <View style={style}>{children}</View>
     </GestureDetector>
   );

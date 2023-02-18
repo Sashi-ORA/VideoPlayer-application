@@ -42,6 +42,7 @@ const VideoPlayerComponent = () => {
     console.log("left/prev video");
   };
   const handlePlayPause = () => {
+    setSkipTo(playBackStatus.completedMillis);
     setPlayPause(!playPause);
   };
   const handleRight = () => {
@@ -101,7 +102,16 @@ const VideoPlayerComponent = () => {
                 setSkipTo={setSkipTo}
                 playBackStatus={playBackStatus}
               >
-                <Pressable onPress={handleLeft}>
+                <Pressable
+                  onPress={handleLeft}
+                  style={{
+                    height: 40,
+                    width: 40,
+                    // backgroundColor: "red",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <AntDesign name="stepbackward" size={30} color="white" />
                 </Pressable>
               </DoubleTapComponent>
@@ -112,7 +122,15 @@ const VideoPlayerComponent = () => {
                   alignItems: "center",
                 }}
               >
-                <Pressable onPress={handlePlayPause}>
+                <Pressable
+                  onPress={handlePlayPause}
+                  style={{
+                    height: 40,
+                    width: 40,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   {playPause ? (
                     <Ionicons name="pause" size={28} color="white" />
                   ) : (
@@ -129,7 +147,16 @@ const VideoPlayerComponent = () => {
                 setSkipTo={setSkipTo}
                 playBackStatus={playBackStatus}
               >
-                <Pressable onPress={handleRight}>
+                <Pressable
+                  onPress={handleRight}
+                  style={{
+                    height: 40,
+                    width: 40,
+                    // backgroundColor: "red",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <AntDesign name="stepforward" size={30} color="white" />
                 </Pressable>
               </DoubleTapComponent>

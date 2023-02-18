@@ -4,8 +4,6 @@ import React from "react";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import VideoPlayerComponent from "../components/VideoPlayer";
-
 const VideoListScreen = () => {
   return (
     <GestureHandlerRootView style={styles.videoContainer}>
