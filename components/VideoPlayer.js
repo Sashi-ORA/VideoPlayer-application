@@ -16,15 +16,23 @@ const VideoPlayerComponent = () => {
     pendingPercentage: 0,
   }); //for progress bar
   const [skipTo, setSkipTo] = useState(0);
+  const videoRef = React.useRef(null);
 
   useEffect(() => {
     setTimeout(() => setShowControls(false), 5000);
   }, []);
   useMemo(() => {
-    console.log("show cntrols", showControls);
+    // console.log("show cntrols", showControls);
     setTimeout(() => setShowControls(false), 5000);
   }, [showControls]);
 
+  // useEffect(() => {
+  //   if (skipTo !== null) {
+  //     videoRef.current.pauseAsync();
+  //     videoRef.current.playFromPositionAsync(playBackStatus.completedMillis);
+  //     setSkipTo(playBackStatus.completedMillis);
+  //   }
+  // }, [skipTo]);
   const handlePlayback = (data) => {
     setPlayBackStatus({
       totalMilli: data.durationMillis,
@@ -39,14 +47,14 @@ const VideoPlayerComponent = () => {
   };
 
   const handleLeft = () => {
-    console.log("left/prev video");
+    // console.log("left/prev video");
   };
   const handlePlayPause = () => {
     setSkipTo(playBackStatus.completedMillis);
     setPlayPause(!playPause);
   };
   const handleRight = () => {
-    console.log("Right/next video");
+    // console.log("Right/next video");
   };
   return (
     <View style={styles.container}>
@@ -55,6 +63,7 @@ const VideoPlayerComponent = () => {
         setShowControls={setShowControls}
       >
         <Video
+          ref={videoRef}
           // onLoad={handlePress}
           onPlaybackStatusUpdate={handlePlayback}
           positionMillis={skipTo}
@@ -65,7 +74,6 @@ const VideoPlayerComponent = () => {
           // useNativeControls
           resizeMode="contain"
           shouldPlay={playPause}
-          // shouldPlay={false}
         />
       </SingleTapComponent>
       {showControls && (
@@ -169,6 +177,8 @@ const VideoPlayerComponent = () => {
             }}
           >
             <ProgressBar
+              setSkipTo={setSkipTo}
+              playBackStatus={playBackStatus}
               style={{
                 width: `${playBackStatus.pendingPercentage}%`,
               }}

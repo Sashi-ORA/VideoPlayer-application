@@ -1,24 +1,32 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import React, { useState, useEffect } from "react";
 
-const ProgressBar = ({ style, playBackStatus, setSkipTo }) => {
+const ProgressBar = ({
+  style,
+  playBackStatus,
+  setPlayBackStatus,
+  setSkipTo,
+}) => {
   const [dimention, setDimention] = useState({ x: 0, width: 0 });
+  const [touchPosition, setTouchPosition] = useState(0);
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    const tempPercentage = Math.floor(
+      (Math.floor(touchPosition) / Math.floor(dimention.width)) * 100
+    );
+    setWidth(tempPercentage);
+    console.log(touchPosition);
+  }, [touchPosition]);
 
   const handleComponentPosition = (event) => {
     console.log("component position ");
-    var { x, width } = event.nativeEvent.layout;
+    var { x, y, width, height } = event.nativeEvent.layout;
     setDimention({ x: x, width: width });
   };
   const handlePress = (evt) => {
-    console.log(playBackStatus);
-    const tempPercentage = Math.floor(
-      (Math.floor(evt.nativeEvent.locationX) / Math.floor(dimention.width)) *
-        100
-    );
-    console.log(tempPercentage);
-    const completedMilli = playBackStatus.totalMilli * (tempPercentage / 100);
-    console.log("completed milli", completedMilli);
-    setSkipTo(completedMilli);
+    console.log("pressed ");
+    setTouchPosition(evt.nativeEvent.locationX);
   };
   return (
     <Pressable
@@ -26,11 +34,13 @@ const ProgressBar = ({ style, playBackStatus, setSkipTo }) => {
       style={{
         justifyContent: "center",
         height: 15,
+        marginTop: 100,
+        backgroundColor: "green",
       }}
     >
       <View style={styles.container} onLayout={handleComponentPosition}>
         <View style={styles.back} />
-        <View style={[styles.front, style]} />
+        <View style={[styles.front, style, { width: `${width}%` }]} />
       </View>
     </Pressable>
   );

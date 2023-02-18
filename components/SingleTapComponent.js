@@ -7,7 +7,7 @@ const SingleTapComponent = ({ children, style, setShowControls }) => {
     .maxDuration(250)
     .numberOfTaps(1)
     .onStart(() => {
-      console.log("singleTap");
+      // console.log("singleTap");
       setShowControls(true);
     });
 
