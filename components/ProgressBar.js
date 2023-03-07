@@ -5,7 +5,6 @@ const ProgressBar = ({ style, playBackStatus, setSkipTo }) => {
   const [dimention, setDimention] = useState({ x: 0, width: 0 });
 
   const handleComponentPosition = (event) => {
-    console.log("component position ");
     var { x, width } = event.nativeEvent.layout;
     setDimention({ x: x, width: width });
   };
@@ -26,6 +25,7 @@ const ProgressBar = ({ style, playBackStatus, setSkipTo }) => {
       style={{
         justifyContent: "center",
         height: 15,
+        flex: 4,
       }}
     >
       <View style={styles.container} onLayout={handleComponentPosition}>

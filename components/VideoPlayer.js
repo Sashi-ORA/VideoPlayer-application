@@ -1,10 +1,12 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, StatusBar } from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import DoubleTapComponent from "./TapComponent";
 import SingleTapComponent from "./SingleTapComponent";
 import { Video } from "expo-av";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 import ProgressBar from "./ProgressBar";
 const VideoPlayerComponent = () => {
@@ -16,23 +18,18 @@ const VideoPlayerComponent = () => {
     pendingPercentage: 0,
   }); //for progress bar
   const [skipTo, setSkipTo] = useState(0);
-  const videoRef = React.useRef(null);
+  const [fullScreen, setFullScreen] = useState(false);
 
   useEffect(() => {
     setTimeout(() => setShowControls(false), 5000);
   }, []);
   useMemo(() => {
-    // console.log("show cntrols", showControls);
-    setTimeout(() => setShowControls(false), 5000);
+    if (showControls) {
+      setTimeout(() => setShowControls(false), 5000);
+    }
+    console.log("coming here");
   }, [showControls]);
 
-  // useEffect(() => {
-  //   if (skipTo !== null) {
-  //     videoRef.current.pauseAsync();
-  //     videoRef.current.playFromPositionAsync(playBackStatus.completedMillis);
-  //     setSkipTo(playBackStatus.completedMillis);
-  //   }
-  // }, [skipTo]);
   const handlePlayback = (data) => {
     setPlayBackStatus({
       totalMilli: data.durationMillis,
@@ -47,23 +44,37 @@ const VideoPlayerComponent = () => {
   };
 
   const handleLeft = () => {
-    // console.log("left/prev video");
+    console.log("left/prev video");
   };
+
+  const handleFullScreen = async () => {
+    console.log("handleFullScreen");
+    setFullScreen(!fullScreen);
+    fullScreen
+      ? await ScreenOrientation.lockAsync(
+          ScreenOrientation.OrientationLock.PORTRAIT_UP
+        )
+      : await ScreenOrientation.lockAsync(
+          ScreenOrientation.OrientationLock.LANDSCAPE
+        );
+  };
+
   const handlePlayPause = () => {
     setSkipTo(playBackStatus.completedMillis);
     setPlayPause(!playPause);
   };
   const handleRight = () => {
-    // console.log("Right/next video");
+    console.log("Right/next video");
   };
   return (
-    <View style={styles.container}>
-      <SingleTapComponent
+    <View style={fullScreen ? styles.fullScreenContainer : styles.container}>
+      <StatusBar hidden={fullScreen} />
+      <DoubleTapComponent
         style={styles.tapContainer}
         setShowControls={setShowControls}
+        showControls={showControls}
       >
         <Video
-          ref={videoRef}
           // onLoad={handlePress}
           onPlaybackStatusUpdate={handlePlayback}
           positionMillis={skipTo}
@@ -75,61 +86,62 @@ const VideoPlayerComponent = () => {
           resizeMode="contain"
           shouldPlay={playPause}
         />
-      </SingleTapComponent>
-      {showControls && (
+      </DoubleTapComponent>
+      <View
+        style={{
+          flex: 1,
+          position: "absolute",
+          height: "100%",
+          width: "100%",
+        }}
+      >
         <View
           style={{
-            flex: 1,
-            position: "absolute",
-            height: "100%",
-            width: "100%",
+            flex: 4,
+            justifyContent: "center",
+            alignItems: "center",
+            // backgroundColor: "red",
           }}
         >
           <View
             style={{
-              flex: 4,
-              justifyContent: "center",
-              alignItems: "center",
-              // backgroundColor: "red",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              // marginTop: 25,
+              width: "100%",
+              height: "100%",
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginTop: 25,
-                width: "100%",
-                height: "100%",
-              }}
+            <DoubleTapComponent
+              style={styles.leftTap}
+              setShowControls={setShowControls}
+              showControls={showControls}
+              name="left"
+              setSkipTo={setSkipTo}
+              playBackStatus={playBackStatus}
             >
-              <DoubleTapComponent
-                style={styles.leftTap}
-                setShowControls={setShowControls}
-                showControls={showControls}
-                name="left"
-                setSkipTo={setSkipTo}
-                playBackStatus={playBackStatus}
-              >
+              {showControls && (
                 <Pressable
                   onPress={handleLeft}
                   style={{
                     height: 40,
                     width: 40,
-                    // backgroundColor: "red",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
                 >
                   <AntDesign name="stepbackward" size={30} color="white" />
                 </Pressable>
-              </DoubleTapComponent>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+              )}
+            </DoubleTapComponent>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {showControls && (
                 <Pressable
                   onPress={handlePlayPause}
                   style={{
@@ -145,16 +157,18 @@ const VideoPlayerComponent = () => {
                     <AntDesign name="caretright" size={30} color="white" />
                   )}
                 </Pressable>
-              </View>
+              )}
+            </View>
 
-              <DoubleTapComponent
-                style={styles.rightTap}
-                setShowControls={setShowControls}
-                showControls={showControls}
-                name="right"
-                setSkipTo={setSkipTo}
-                playBackStatus={playBackStatus}
-              >
+            <DoubleTapComponent
+              style={styles.rightTap}
+              setShowControls={setShowControls}
+              showControls={showControls}
+              name="right"
+              setSkipTo={setSkipTo}
+              playBackStatus={playBackStatus}
+            >
+              {showControls && (
                 <Pressable
                   onPress={handleRight}
                   style={{
@@ -167,25 +181,48 @@ const VideoPlayerComponent = () => {
                 >
                   <AntDesign name="stepforward" size={30} color="white" />
                 </Pressable>
-              </DoubleTapComponent>
-            </View>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-            }}
-          >
-            <ProgressBar
-              setSkipTo={setSkipTo}
-              playBackStatus={playBackStatus}
-              style={{
-                width: `${playBackStatus.pendingPercentage}%`,
-              }}
-            />
+              )}
+            </DoubleTapComponent>
           </View>
         </View>
-      )}
+        {showControls && (
+          <View style={fullScreen ? styles.fullScreen : styles.exitFullScreen}>
+            <View style={{ flex: 9 }}>
+              <ProgressBar
+                setSkipTo={setSkipTo}
+                playBackStatus={playBackStatus}
+                style={{
+                  width: `${playBackStatus.pendingPercentage}%`,
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {fullScreen ? (
+                <MaterialCommunityIcons
+                  name="fullscreen-exit"
+                  size={30}
+                  color="white"
+                  onPress={handleFullScreen}
+                />
+              ) : (
+                <MaterialCommunityIcons
+                  name="fullscreen"
+                  size={30}
+                  color="white"
+                  onPress={handleFullScreen}
+                />
+              )}
+            </View>
+          </View>
+        )}
+      </View>
     </View>
   );
 };
@@ -194,11 +231,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  fullScreenContainer: {
+    flex: 1,
+    marginRight: StatusBar.currentHeight,
+  },
   image: {
     flex: 1,
   },
   videoContainer: {
     flex: 1,
+  },
+  fullScreen: {
+    flex: 1,
+    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: "10%",
+  },
+  exitFullScreen: {
+    flex: 1,
+    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    // marginBottom: "0",
   },
   tapContainer: {
     flex: 1,

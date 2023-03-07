@@ -4,12 +4,14 @@ import React from "react";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ExpoVideoPlayer from "../components/ExpoVideoPlayer";
+import AvailableVideosList from "../components/AvailableVideosList";
 
 const VideoListScreen = () => {
   return (
     <GestureHandlerRootView style={styles.videoContainer}>
-      <VideoPlayer />
+      {/* <VideoPlayer /> */}
       {/* <ExpoVideoPlayer /> */}
+      <AvailableVideosList />
     </GestureHandlerRootView>
   );
 };
@@ -18,7 +20,7 @@ const styles = StyleSheet.create({
   videoContainer: {
     width: "100%",
     aspectRatio: 16 / 9,
-    borderWidth: 5,
+    // borderWidth: 5,
     borderColor: "black",
   },
 });

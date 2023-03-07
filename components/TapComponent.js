@@ -9,6 +9,7 @@ const DoubleTapComponent = ({
   setShowControls,
   setSkipTo,
   playBackStatus,
+  showControls,
 }) => {
   const handleRightSkip = (data) => {
     // console.log("right", data);
@@ -22,14 +23,22 @@ const DoubleTapComponent = ({
     setSkipTo(temp);
   };
   const doubleTap = Gesture.Tap()
-    .maxDuration(250)
+    .maxDuration(100)
     .numberOfTaps(2)
     .onStart(() => {
-      // console.log(`double tap ${name}`);
+      console.log(`double tap ${name}`);
       // setShowControls(true);
       name == "right"
         ? handleRightSkip(playBackStatus)
         : handleLeftSkip(playBackStatus);
+    });
+  const singleTap = Gesture.Tap()
+    .maxDuration(1000)
+    .numberOfTaps(1)
+    .onStart(() => {
+      // console.log("singleTap");
+      setShowControls(!showControls);
+      // setShowControls(true);
     });
 
   // const singleTap = Gesture.Tap()
@@ -41,8 +50,8 @@ const DoubleTapComponent = ({
   //   });
 
   return (
-    // <GestureDetector gesture={Gesture.Exclusive(doubleTap, singleTap)}>
-    <GestureDetector gesture={doubleTap}>
+    <GestureDetector gesture={Gesture.Exclusive(doubleTap, singleTap)}>
+      {/* <GestureDetector gesture={doubleTap}> */}
       <View style={style}>{children}</View>
     </GestureDetector>
   );
