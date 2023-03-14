@@ -5,6 +5,7 @@ import {
   FlatList,
   Image,
   StatusBar,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as MediaLibrary from "expo-media-library";
@@ -38,7 +39,7 @@ const AvailableVideosList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight,
+    // marginTop: StatusBar.currentHeight,
   },
 });
 export default AvailableVideosList;

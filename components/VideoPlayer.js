@@ -113,7 +113,7 @@ const VideoPlayerComponent = () => {
               width: 40,
               justifyContent: "center",
               alignItems: "center",
-              marginTop: 20,
+              // marginTop: 20,
             }}
           >
             <Ionicons name="arrow-back" size={24} color="white" />
@@ -254,6 +254,7 @@ const VideoPlayerComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "red",
   },
   image: {
     flex: 1,

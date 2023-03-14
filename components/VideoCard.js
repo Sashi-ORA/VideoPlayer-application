@@ -18,7 +18,6 @@ const VideoCard = ({ item }) => {
   }
 
   function handleVideoPress(id) {
-    console.log("Video Pressed");
     navigation.navigate("videoPlayer");
   }
 

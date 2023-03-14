@@ -1,4 +1,4 @@
-import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
 
 import VideoListScreen from "./screens/VideoListScreen";
 import AvailableVideosList from "./components/AvailableVideosList";
@@ -10,17 +10,15 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* <VideoListScreen /> */}
-      {/* <AvailableVideosList /> */}
+    <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="videoList"
           // screenOptions={{ headersShown: false }}
         >
           <Stack.Screen
-            options={{ headerShown: false }}
-            name="videoList"
+            // options={{ headerShown: false }}
+            name="videos"
             component={AvailableVideosList}
           />
           <Stack.Screen
@@ -30,7 +28,7 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </SafeAreaView>
+    </View>
   );
 }
 
