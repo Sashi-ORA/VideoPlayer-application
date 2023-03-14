@@ -8,6 +8,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ScreenOrientation from "expo-screen-orientation";
 
+import { useNavigation } from "@react-navigation/native";
+
 import ProgressBar from "./ProgressBar";
 const VideoPlayerComponent = () => {
   const [showControls, setShowControls] = useState(true);
@@ -19,6 +21,8 @@ const VideoPlayerComponent = () => {
   }); //for progress bar
   const [skipTo, setSkipTo] = useState(0);
   const [fullScreen, setFullScreen] = useState(false);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     setTimeout(() => setShowControls(false), 5000);
@@ -47,8 +51,14 @@ const VideoPlayerComponent = () => {
     console.log("left/prev video");
   };
 
+  const handleBack = async () => {
+    await ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.PORTRAIT_UP
+    );
+    navigation.goBack();
+  };
+
   const handleFullScreen = async () => {
-    console.log("handleFullScreen");
     setFullScreen(!fullScreen);
     fullScreen
       ? await ScreenOrientation.lockAsync(
@@ -67,7 +77,7 @@ const VideoPlayerComponent = () => {
     console.log("Right/next video");
   };
   return (
-    <View style={fullScreen ? styles.fullScreenContainer : styles.container}>
+    <View style={styles.container}>
       <StatusBar hidden={fullScreen} />
       <DoubleTapComponent
         style={styles.tapContainer}
@@ -95,6 +105,20 @@ const VideoPlayerComponent = () => {
           width: "100%",
         }}
       >
+        {showControls && (
+          <Pressable
+            onPress={handleBack}
+            style={{
+              height: 40,
+              width: 40,
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 20,
+            }}
+          >
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </Pressable>
+        )}
         <View
           style={{
             flex: 4,
@@ -230,10 +254,6 @@ const VideoPlayerComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  fullScreenContainer: {
-    flex: 1,
-    marginRight: StatusBar.currentHeight,
   },
   image: {
     flex: 1,

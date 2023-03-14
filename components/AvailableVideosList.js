@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  StatusBar,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import * as MediaLibrary from "expo-media-library";
 import VideoCard from "./VideoCard";
@@ -15,7 +22,6 @@ const AvailableVideosList = () => {
       mediaType: "video",
       sortBy: MediaLibrary.SortBy.creationTime,
     });
-    console.log(assets);
     setLocalAssets(assets);
   }
   useEffect(() => {
@@ -32,6 +38,7 @@ const AvailableVideosList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: StatusBar.currentHeight,
   },
 });
 export default AvailableVideosList;

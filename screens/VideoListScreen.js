@@ -9,9 +9,7 @@ import AvailableVideosList from "../components/AvailableVideosList";
 const VideoListScreen = () => {
   return (
     <GestureHandlerRootView style={styles.videoContainer}>
-      {/* <VideoPlayer /> */}
-      {/* <ExpoVideoPlayer /> */}
-      <AvailableVideosList />
+      <VideoPlayer />
     </GestureHandlerRootView>
   );
 };

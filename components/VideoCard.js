@@ -1,7 +1,11 @@
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import React from "react";
 
+import { useNavigation } from "@react-navigation/native";
+
 const VideoCard = ({ item }) => {
+  const navigation = useNavigation();
+
   function formatDuration(minutes) {
     const hours = Math.floor(minutes / 60);
     let remainingMinutes = Math.floor(minutes % 60);
@@ -13,8 +17,9 @@ const VideoCard = ({ item }) => {
     return `${hours}:${remainingMinutes}:${remainingSeconds}`;
   }
 
-  function handleVideoPress() {
+  function handleVideoPress(id) {
     console.log("Video Pressed");
+    navigation.navigate("videoPlayer");
   }
 
   return (
