@@ -1,4 +1,5 @@
 import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
+import { useReducer } from "react";
 
 import VideoListScreen from "./screens/VideoListScreen";
 import AvailableVideosList from "./components/AvailableVideosList";
@@ -6,16 +7,17 @@ import AvailableVideosList from "./components/AvailableVideosList";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import MyContext from "./context/VideoContext";
+import videoReducer from "./reducer/VideoUrlReducer";
+
 export default function App() {
+  const [videourl, dispatch] = useReducer(videoReducer, "");
   const Stack = createNativeStackNavigator();
 
   return (
-    <View style={styles.container}>
+    <MyContext.Provider value={{ videourl, dispatch }} style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="videoList"
-          // screenOptions={{ headersShown: false }}
-        >
+        <Stack.Navigator initialRouteName="videoList">
           <Stack.Screen
             // options={{ headerShown: false }}
             name="videos"
@@ -28,7 +30,7 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </View>
+    </MyContext.Provider>
   );
 }
 

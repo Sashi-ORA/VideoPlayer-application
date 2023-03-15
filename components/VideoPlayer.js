@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable, StatusBar } from "react-native";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import DoubleTapComponent from "./TapComponent";
 import SingleTapComponent from "./SingleTapComponent";
 import { Video } from "expo-av";
@@ -11,6 +11,8 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { useNavigation } from "@react-navigation/native";
 
 import ProgressBar from "./ProgressBar";
+import MyContext from "../context/VideoContext";
+
 const VideoPlayerComponent = () => {
   const [showControls, setShowControls] = useState(true);
   const [playPause, setPlayPause] = useState(true);
@@ -22,6 +24,7 @@ const VideoPlayerComponent = () => {
   const [skipTo, setSkipTo] = useState(0);
   const [fullScreen, setFullScreen] = useState(false);
 
+  const { videourl } = useContext(MyContext);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -31,7 +34,6 @@ const VideoPlayerComponent = () => {
     if (showControls) {
       setTimeout(() => setShowControls(false), 5000);
     }
-    console.log("coming here");
   }, [showControls]);
 
   const handlePlayback = (data) => {
@@ -91,7 +93,7 @@ const VideoPlayerComponent = () => {
           // onFullscreenUpdate={handleFullScreenUpdate}
           //   rate={1}
           style={styles.video}
-          source={require("../test.mp4")}
+          source={{ uri: videourl }}
           // useNativeControls
           resizeMode="contain"
           shouldPlay={playPause}
@@ -254,7 +256,7 @@ const VideoPlayerComponent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "red",
+    backgroundColor: "black",
   },
   image: {
     flex: 1,

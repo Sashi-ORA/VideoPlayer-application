@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     width: "100%",
     aspectRatio: 16 / 9,
     // borderWidth: 5,
-    borderColor: "black",
+    // borderColor: "black",
   },
 });
 export default VideoListScreen;

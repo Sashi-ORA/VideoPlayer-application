@@ -1,9 +1,11 @@
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 
 import { useNavigation } from "@react-navigation/native";
+import MyContext from "../context/VideoContext";
 
 const VideoCard = ({ item }) => {
+  const { dispatch } = useContext(MyContext);
   const navigation = useNavigation();
 
   function formatDuration(minutes) {
@@ -18,6 +20,7 @@ const VideoCard = ({ item }) => {
   }
 
   function handleVideoPress(id) {
+    dispatch({ type: "CURRENT_VIDEO", payload: item.uri });
     navigation.navigate("videoPlayer");
   }
 
@@ -46,7 +49,7 @@ const VideoCard = ({ item }) => {
       </View>
       <View style={{ width: "70%", paddingRight: 10 }}>
         <Text style={{ fontWeight: "bold" }}>
-          {item.uri.split("Download/")[1]}
+          {item.uri.split("/")[item.uri.split("/").length - 1]}
         </Text>
       </View>
     </Pressable>
