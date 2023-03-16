@@ -95,7 +95,7 @@ const VideoPlayerComponent = () => {
           style={styles.video}
           source={{ uri: videourl }}
           // useNativeControls
-          resizeMode="contain"
+          resizeMode="cover"
           shouldPlay={playPause}
         />
       </DoubleTapComponent>
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   video: {
-    width: "100%",
+    width: "95%",
     aspectRatio: 16 / 9,
   },
 });
