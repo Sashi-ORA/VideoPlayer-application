@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import ProgressBar from "./ProgressBar";
 import MyContext from "../context/VideoContext";
+import AvailableVideosList from "./AvailableVideosList";
 
 const VideoPlayerComponent = () => {
   const [showControls, setShowControls] = useState(true);
@@ -92,7 +93,7 @@ const VideoPlayerComponent = () => {
           positionMillis={skipTo}
           // onFullscreenUpdate={handleFullScreenUpdate}
           //   rate={1}
-          style={styles.video}
+          style={fullScreen ? styles.videoFullScreen : styles.video}
           source={{ uri: videourl }}
           // useNativeControls
           resizeMode="cover"
@@ -308,8 +309,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   video: {
-    width: "95%",
+    width: "100%",
     aspectRatio: 16 / 9,
+    alignSelf: "center",
+    justifyContent: "center",
+  },
+  videoFullScreen: {
+    width: "95%",
+    aspectRatio: 14 / 9,
+    alignSelf: "center",
+    justifyContent: "center",
   },
 });
 export default VideoPlayerComponent;
