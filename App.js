@@ -20,7 +20,7 @@ export default function App() {
         <Stack.Navigator initialRouteName="videoList">
           <Stack.Screen
             // options={{ headerShown: false }}
-            name="videos"
+            name="your videos"
             component={AvailableVideosList}
           />
           <Stack.Screen

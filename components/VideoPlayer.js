@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Pressable, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  StatusBar,
+  BackHandler,
+} from "react-native";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import DoubleTapComponent from "./TapComponent";
 import SingleTapComponent from "./SingleTapComponent";
@@ -29,13 +36,37 @@ const VideoPlayerComponent = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    setTimeout(() => setShowControls(false), 5000);
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBackPress
+    );
+    handleStartupTask();
+    return () => backHandler.remove();
   }, []);
+
+  const handleStartupTask = async () => {
+    await ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.LANDSCAPE
+    );
+    setTimeout(() => setShowControls(false), 5000);
+  };
+
   useMemo(() => {
     if (showControls) {
       setTimeout(() => setShowControls(false), 5000);
     }
   }, [showControls]);
+
+  const handleBackPress = async () => {
+    // Handle back button press here
+    // Return true to prevent default back button behavior
+    // Return false to allow default back button behavior
+    await ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.PORTRAIT_UP
+    );
+    navigation.goBack();
+    return true;
+  };
 
   const handlePlayback = (data) => {
     setPlayBackStatus({
@@ -81,7 +112,7 @@ const VideoPlayerComponent = () => {
   };
   return (
     <View style={styles.container}>
-      <StatusBar hidden={fullScreen} />
+      <StatusBar hidden={true} />
       <DoubleTapComponent
         style={styles.tapContainer}
         setShowControls={setShowControls}
@@ -93,7 +124,7 @@ const VideoPlayerComponent = () => {
           positionMillis={skipTo}
           // onFullscreenUpdate={handleFullScreenUpdate}
           //   rate={1}
-          style={fullScreen ? styles.videoFullScreen : styles.video}
+          style={styles.videoFullScreen}
           source={{ uri: videourl }}
           // useNativeControls
           resizeMode="cover"
@@ -213,7 +244,7 @@ const VideoPlayerComponent = () => {
           </View>
         </View>
         {showControls && (
-          <View style={fullScreen ? styles.fullScreen : styles.exitFullScreen}>
+          <View style={styles.fullScreen}>
             <View style={{ flex: 9 }}>
               <ProgressBar
                 setSkipTo={setSkipTo}
@@ -224,7 +255,7 @@ const VideoPlayerComponent = () => {
               />
             </View>
 
-            <View
+            {/* <View
               style={{
                 flex: 1,
                 justifyContent: "center",
@@ -246,7 +277,7 @@ const VideoPlayerComponent = () => {
                   onPress={handleFullScreen}
                 />
               )}
-            </View>
+            </View> */}
           </View>
         )}
       </View>

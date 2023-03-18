@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "video_player_git",
+    "name": "Palakuru Video Player",
     "slug": "video_player_git",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,9 +18,6 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    },
-    "ios": {
       "requireFullScreen": true
     },
     "plugins": [
@@ -29,16 +26,30 @@
         {
           "initialOrientation": "DEFAULT"
         }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
+          "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
       ]
     ],
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.jaswanth_palakuruk.video_player_git"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a6a63dda-148f-4cdc-b2bb-a539c558eaed"
+      }
     }
   }
 }

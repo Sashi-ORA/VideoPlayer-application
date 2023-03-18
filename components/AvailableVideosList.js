@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import * as MediaLibrary from "expo-media-library";
 import VideoCard from "./VideoCard";
+import { Camera } from "expo-camera";
 
 const AvailableVideosList = () => {
   const [localAssets, setLocalAssets] = useState([]);
@@ -25,8 +26,20 @@ const AvailableVideosList = () => {
     });
     setLocalAssets(assets);
   }
+
+  async function permission() {
+    let { status } = await Camera.requestCameraPermissionsAsync();
+    if (status !== "granted") {
+      // handle permission denied
+      status = await Camera.requestCameraPermissionsAsync();
+    } else {
+      // permission granted, access videos here
+      getVideos();
+    }
+  }
+
   useEffect(() => {
-    getVideos();
+    permission();
   }, []);
 
   return (
