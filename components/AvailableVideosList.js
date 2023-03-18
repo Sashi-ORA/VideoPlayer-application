@@ -1,16 +1,7 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Image,
-  StatusBar,
-  SafeAreaView,
-} from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as MediaLibrary from "expo-media-library";
 import VideoCard from "./VideoCard";
-import { Camera } from "expo-camera";
 
 const AvailableVideosList = () => {
   const [localAssets, setLocalAssets] = useState([]);
@@ -28,13 +19,14 @@ const AvailableVideosList = () => {
   }
 
   async function permission() {
-    let { status } = await Camera.requestCameraPermissionsAsync();
-    if (status !== "granted") {
-      // handle permission denied
-      status = await Camera.requestCameraPermissionsAsync();
-    } else {
-      // permission granted, access videos here
+    const { granted, canAskAgain } = await MediaLibrary.getPermissionsAsync();
+    console.log("status", granted);
+    if (granted) {
       getVideos();
+    } else if (canAskAgain) {
+      const resp = await MediaLibrary.requestPermissionsAsync();
+      console.log(resp);
+      permission();
     }
   }
 
@@ -52,7 +44,6 @@ const AvailableVideosList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: StatusBar.currentHeight,
   },
 });
 export default AvailableVideosList;
