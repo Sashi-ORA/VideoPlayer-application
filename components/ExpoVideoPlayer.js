@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import React, { useState, useEffect } from "react";
+import { GestureDetector, Gesture } from "react-native-gesture-handler";
 
 const ProgressBar = ({
   style,
@@ -16,11 +17,11 @@ const ProgressBar = ({
       (Math.floor(touchPosition) / Math.floor(dimention.width)) * 100
     );
     setWidth(tempPercentage);
-    console.log(touchPosition);
+    // console.log(touchPosition);
   }, [touchPosition]);
 
   const handleComponentPosition = (event) => {
-    console.log("component position ");
+    // console.log("component position ");
     var { x, y, width, height } = event.nativeEvent.layout;
     setDimention({ x: x, width: width });
   };
@@ -28,21 +29,33 @@ const ProgressBar = ({
     console.log("pressed ");
     setTouchPosition(evt.nativeEvent.locationX);
   };
+
+  const handleDrag = (evt) => {
+    console.log(evt);
+    setTouchPosition(evt.x);
+  };
+
+  const tap = Gesture.Pan().onTouchesMove((a) => {
+    handleDrag(a["allTouches"][0]);
+  });
+
   return (
-    <Pressable
-      onPress={handlePress}
-      style={{
-        justifyContent: "center",
-        height: 15,
-        marginTop: 100,
-        backgroundColor: "green",
-      }}
-    >
-      <View style={styles.container} onLayout={handleComponentPosition}>
-        <View style={styles.back} />
-        <View style={[styles.front, style, { width: `${width}%` }]} />
-      </View>
-    </Pressable>
+    <GestureDetector gesture={tap}>
+      <Pressable
+        onPress={handlePress}
+        style={{
+          justifyContent: "center",
+          height: 15,
+          marginTop: 100,
+          backgroundColor: "green",
+        }}
+      >
+        <View style={styles.container} onLayout={handleComponentPosition}>
+          <View style={styles.back} />
+          <View style={[styles.front, style, { width: `${width}%` }]} />
+        </View>
+      </Pressable>
+    </GestureDetector>
   );
 };
 
