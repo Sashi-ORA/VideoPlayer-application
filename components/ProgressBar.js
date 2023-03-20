@@ -9,14 +9,11 @@ const ProgressBar = ({ style, playBackStatus, setSkipTo }) => {
     setDimention({ x: x, width: width });
   };
   const handlePress = (evt) => {
-    console.log(playBackStatus);
     const tempPercentage = Math.floor(
       (Math.floor(evt.nativeEvent.locationX) / Math.floor(dimention.width)) *
         100
     );
-    console.log(tempPercentage);
     const completedMilli = playBackStatus.totalMilli * (tempPercentage / 100);
-    console.log("completed milli", completedMilli);
     setSkipTo(completedMilli);
   };
   return (
