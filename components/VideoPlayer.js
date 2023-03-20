@@ -23,6 +23,7 @@ import AvailableVideosList from "./AvailableVideosList";
 
 const VideoPlayerComponent = () => {
   const [showControls, setShowControls] = useState(true);
+  const [hideControlsInterval, setHideControlsInterval] = useState(null);
   const [playPause, setPlayPause] = useState(true);
   const [playBackStatus, setPlayBackStatus] = useState({
     totalMilli: 0,
@@ -48,19 +49,25 @@ const VideoPlayerComponent = () => {
     await ScreenOrientation.lockAsync(
       ScreenOrientation.OrientationLock.LANDSCAPE
     );
+    showControlsFunc();
     setTimeout(() => setShowControls(false), 5000);
   };
 
-  useMemo(() => {
-    if (showControls) {
-      setTimeout(() => setShowControls(false), 5000);
+  const showControlsFunc = () => {
+    setShowControls(true);
+    if (hideControlsInterval) {
+      clearInterval(hideControlsInterval);
     }
-  }, [showControls]);
+    // Set a new hide controls interval
+    setHideControlsInterval(
+      setInterval(() => {
+        setShowControls(false);
+        clearInterval(hideControlsInterval);
+      }, 5000)
+    );
+  };
 
   const handleBackPress = async () => {
-    // Handle back button press here
-    // Return true to prevent default back button behavior
-    // Return false to allow default back button behavior
     await ScreenOrientation.lockAsync(
       ScreenOrientation.OrientationLock.PORTRAIT_UP
     );

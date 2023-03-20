@@ -17,26 +17,26 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    // <MyContext.Provider value={{ videourl, dispatch }} style={styles.container}>
-    //   <NavigationContainer>
-    //     <Stack.Navigator initialRouteName="videoList">
-    //       <Stack.Screen
-    //         // options={{ headerShown: false }}
-    //         name="your videos"
-    //         component={AvailableVideosList}
-    //       />
-    //       <Stack.Screen
-    //         options={{ headerShown: false }}
-    //         name="videoPlayer"
-    //         component={VideoListScreen}
-    //       />
-    //     </Stack.Navigator>
-    //   </NavigationContainer>
-    // </MyContext.Provider>
+    <MyContext.Provider value={{ videourl, dispatch }} style={styles.container}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="videoList">
+          <Stack.Screen
+            // options={{ headerShown: false }}
+            name="your videos"
+            component={AvailableVideosList}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="videoPlayer"
+            component={VideoListScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </MyContext.Provider>
 
-    <GestureHandlerRootView style={styles.videoContainer}>
-      <ExpoVideoPlayer />
-    </GestureHandlerRootView>
+    // <GestureHandlerRootView style={styles.videoContainer}>
+    //   <ExpoVideoPlayer />
+    // </GestureHandlerRootView>
   );
 }
 
